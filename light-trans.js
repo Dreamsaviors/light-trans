@@ -3,10 +3,10 @@ var LT = function(options) {
 	options 				= options || {}
 	this.options 			= options;
 	this.recordMode 		= options.recordMode || false;
-	this.attrGetter			= options.attrGetter	 || "data-tranattr";
-	this.innerHTMLGetter	= options.innerHTMLGetter || "data-tran";
-	this.defaultListener	= options.defaultListener || options.listener || "_t"
-	this.translationPair	= options.translationPair || {};
+	this.attrGetter			= options.attrGetter	 	|| "data-tranattr";
+	this.innerHTMLGetter	= options.innerHTMLGetter 	|| "data-tran";
+	this.defaultListener	= options.defaultListener 	|| options.listener || "_t"
+	this.translationPair	= options.translationPair 	|| {};
 	this.reg				= {};
 	this.transData 			= {};
 	this.transRowKey 		= 0;
@@ -37,6 +37,13 @@ LT.prototype.get = function(key){
 LT.prototype.getConfig = function(key){
 	if (typeof key !== 'string') return console.warn('Key must be a string')
 	return this.config[key];
+}
+
+LT.prototype.save = function(key, value) {
+	key = key || "";
+	if (typeof key !== 'string') return console.warn("can not set config with non string key");
+	if (key !== '')  this.config[key] = value;
+	window.localStorage.setItem("ltConfig", JSON.stringify(this.config))
 }
 
 LT.prototype.createListener = function(name) {
@@ -224,12 +231,7 @@ LT.prototype.translateHTML = function() {
 	})
 }
 
-LT.prototype.save = function(key, value) {
-	key = key || "";
-	if (typeof key !== 'string') return console.warn("can not set config with non string key");
-	if (key !== '')  this.config[key] = value;
-	window.localStorage.setItem("ltConfig", JSON.stringify(this.config))
-}
+
 
 LT.prototype.init = function() {
 	var config = {};
